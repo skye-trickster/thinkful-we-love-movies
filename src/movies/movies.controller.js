@@ -1,10 +1,11 @@
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 const movies = require("../samples/movies")
+const service = require("./movies.service")
 
-function list(request, response, next) {
-    const movieList = movies
-    response.json({ data: movieList })
+async function list(request, response, next) {
+    response.json({ data: service.list() })
 }
 
 module.exports = {
-    list
+    list: [asyncErrorBoundary(list)]
 }
