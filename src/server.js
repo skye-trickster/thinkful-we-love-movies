@@ -4,11 +4,13 @@ const app = require("./app");
 const knex = require("./db/connection");
 
 const listener = () => console.log(`Listening on Port ${PORT}!`);
+app.listen(PORT, listener) // remove after doing the database
 
-knex.migrate
+// TODO: UNCOMMENT WHEN DOING THE DATABASE
+/*knex.migrate
   .latest()
   .then((migrations) => {
     console.log("migrations", migrations);
     app.listen(PORT, listener);
   })
-  .catch(console.error);
+  .catch(console.error);*/
