@@ -14,7 +14,6 @@ exports.up = function (knex) {
             .inTable("theaters")
             .onDelete("CASCADE");
         table.boolean("is_showing")
-        table.timestamps(true, true);
     });
 };
 
