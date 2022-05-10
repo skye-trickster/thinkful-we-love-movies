@@ -9,12 +9,14 @@ const errorHandler = require("./errors/errorHandler")
 
 // router imports
 const moviesRouter = require("./movies/movies.router")
+const reviewsRouter = require("./reviews/reviews.router")
 
 app.use(cors())
 app.use(express.json())
 
 // routes
 app.use("/movies", moviesRouter)
+app.use("/reviews", reviewsRouter)
 
 // errors
 app.use(notFound)

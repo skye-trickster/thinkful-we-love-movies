@@ -1,5 +1,5 @@
 const knex = require("../db/connection") // need knex for db management
-const mapProperties = require("../utils/map-properties")
+const mapCriticsToReviews = require("../utils/map-critics-to-reviews")
 const table = "movies as m"
 
 function list() {
@@ -29,20 +29,6 @@ function readShowingTheaters({ movie_id }) {
         .where({ "mt.movie_id": movie_id }, { "mt.is_showing": true })
 }
 
-const addCritics = (reviews) => {
-    return reviews.map(mapProperties({
-        critic_id: "critic.critic_id",
-        created_at: "critic.created_at",
-        updated_at: "critic.updated_at",
-        preferred_name: "critic.preferred_name",
-        surname: "critic.surname",
-        organization_name: "critic.organization_name",
-        r_created_at: "created_at",
-        r_updated_at: "updated_at",
-        r_critic_id: "critic_id"
-    }))
-}
-
 function readReviewsFromMovie({ movie_id }) {
 
     return knex("reviews as r")
@@ -52,7 +38,7 @@ function readReviewsFromMovie({ movie_id }) {
         .select("r.updated_at as r_updated_at")
         .select("r.critic_id as r_critic_id")
         .where({ "r.movie_id": movie_id })
-        .then(addCritics)
+        .then(mapCriticsToReviews)
 }
 
 module.exports = {
