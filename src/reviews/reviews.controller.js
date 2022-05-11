@@ -17,6 +17,29 @@ async function reviewExists(request, response, next) {
     })
 }
 
+/**
+ * Throw an error if the user gives a piece of data within body that's not either a content or a score
+ */
+function hasExactParameters(parameterList) {
+    return function (request, response, next) {
+        const keys = Object.keys(request.body.data)
+
+        const extra = []
+        keys.forEach((key) => {
+            if (!parameterList.includes(key)) {
+                extra.push(key)
+            }
+        })
+        if (extra.length) {
+            return next({
+                status: 400,
+                message: `Invalid parameter(s): ${extra.join(', ')}`
+            })
+        }
+        next()
+    }
+}
+
 async function update(request, response, next) {
 
     const { review } = response.locals
@@ -26,7 +49,8 @@ async function update(request, response, next) {
         ...review,
         ...updatedData
     }
-    const data = await service.update(newReview)
+
+    await service.update(newReview) // this responds with just a number, so pass in newReview instead
 
 
     response.json({ data: newReview })
@@ -43,7 +67,7 @@ function read(request, response, next) {
 }
 
 module.exports = {
-    update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
+    update: [asyncErrorBoundary(reviewExists), hasExactParameters(["score", "content"]), asyncErrorBoundary(update)],
     delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
     read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)]
 }
