@@ -1,5 +1,4 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
-//const movies = require("../samples/movies")
 const service = require("./movies.service")
 
 async function list(request, response, next) {

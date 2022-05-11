@@ -29,7 +29,7 @@ async function update(request, response, next) {
     const data = await service.update(newReview)
 
 
-    response.json({ data })
+    response.json({ data: newReview })
 }
 
 async function destroy(request, response, next) {
@@ -38,7 +38,12 @@ async function destroy(request, response, next) {
     response.sendStatus(204)
 }
 
+function read(request, response, next) {
+    response.json({ data: response.locals.review })
+}
+
 module.exports = {
     update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
     delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
+    read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)]
 }
