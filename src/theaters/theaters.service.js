@@ -15,6 +15,7 @@ const reduceMoves = reduceProperties("theater_id", {
 })
 
 function list() {
+    // listed every single row in order to minimize ambiguity within the select function
     return knex("theaters as t")
         .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
         .join("movies as m", "m.movie_id", "mt.movie_id")
